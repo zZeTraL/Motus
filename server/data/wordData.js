@@ -1,6 +1,7 @@
 module.exports = {
-    wordData: [
-        "okey",
-        "pokemon"
-    ]
+    wordArray: [
+        "JEU",
+        "COFFRE",
+        "ELECTRIQUE"
+    ],
 }

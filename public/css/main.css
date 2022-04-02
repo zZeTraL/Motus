@@ -37,14 +37,14 @@ header h1 mark {
 main #gameBoard {
   margin: auto;
   display: grid;
-  background-color: black;
 }
 main #gameBoard div {
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
-  font-size: var(--fs-s);
+  font-size: var(--fs-l);
+  border: 1px solid white;
 }
 
 /*
@@ -60,7 +60,16 @@ main #gameBoard div {
 }
 .footer p {
   padding: 0;
-  font-size: 15px;
+  color: white;
+  font-size: var(--fs-s);
+}
+
+.green {
+  background-color: green;
+}
+
+.orange {
+  background-color: orange;
 }
 
 @font-face {

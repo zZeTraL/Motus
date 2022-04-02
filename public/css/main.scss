@@ -44,14 +44,14 @@ main {
   #gameBoard {
     margin: auto;
     display: grid;
-    background-color: black;
 
     div {
       display: flex;
       justify-content: center;
       align-items: center;
       color: white;
-      font-size: var(--fs-s);
+      font-size: var(--fs-l);
+      border: 1px solid hsla(0, 0%, 100%, 1);
     }
 
   }
@@ -73,8 +73,17 @@ main {
 
   p {
     padding: 0;
-    font-size: 15px;
+    color: white;
+    font-size: var(--fs-s);
   }
+}
+
+.green {
+  background-color: green;
+}
+
+.orange {
+  background-color: orange;
 }
 
 @font-face {
