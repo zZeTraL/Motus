@@ -7,6 +7,8 @@
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   padding: 0;
   margin: 0;
   background-color: #233a5f;
@@ -34,8 +36,19 @@ header h1 mark {
   background-size: 100% 15px;
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  flex-grow: 2;
+}
+main #gameResult {
+  color: white;
+  font-size: var(--fs-s);
+  font-weight: 800;
+}
 main #gameBoard {
-  margin: auto;
   display: grid;
 }
 main #gameBoard div {
@@ -43,7 +56,7 @@ main #gameBoard div {
   justify-content: center;
   align-items: center;
   color: white;
-  font-size: var(--fs-l);
+  font-size: var(--fs-xl);
   border: 1px solid white;
 }
 

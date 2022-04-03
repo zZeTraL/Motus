@@ -8,6 +8,7 @@ let gameManager = (function () {
     })
 
     let gameBoard = document.getElementById("gameBoard");
+    let gameResult = document.getElementById("gameResult")
     let word = undefined
     let wordLength = undefined;
     let chance = 7;
@@ -15,6 +16,7 @@ let gameManager = (function () {
     // Game variables
     let previousLetterIndex = undefined;
     let unReachableIndex = [];
+    let savedRow = [];
 
     return {
         createBoard(){
@@ -23,6 +25,7 @@ let gameManager = (function () {
                 div.setAttribute("index", i.toString());
                 if(i < wordLength){
                     div.textContent = ".";
+                    savedRow.push(i);
                 }
                 div.style.setProperty("width", "5rem");
                 div.style.setProperty("height", "5rem");
@@ -40,6 +43,44 @@ let gameManager = (function () {
             gameBoard.style.setProperty("grid-template-rows", "repeat(" + chance + ", 5rem)");
         },
 
+        checkWin(){
+            let children = gameBoard.children;
+            let tmp = 7 - chance;
+            for (let i = (wordLength * tmp), j = 0, count = 0; i < (wordLength * tmp) + wordLength; i++, j++) {
+                if(children[i].textContent === word[j]){
+                    count++
+                    if(count === wordLength){
+                        console.log("Win")
+                        gameResult.textContent = "You have found the mystery word!!! (" +  ((7 - chance) + 1).toString() + ")"
+                    }
+                }
+            }
+        },
+
+        checkLoose(){
+            let children = gameBoard.children;
+            if(chance <= 0){
+                console.log("Looser")
+            } else {
+                let tmp = 7 - chance;
+                for (let i = (wordLength * tmp); i < (wordLength * tmp) + wordLength; i++) {
+                    children[i].textContent = "."
+                    savedRow.push(i);
+                }
+                previousLetterIndex = undefined;
+            }
+        },
+
+        isRowFull(){
+            let children = gameBoard.children;
+            for (let i = 0; i < savedRow.length; i++) {
+                if(children[savedRow[i]].textContent === "."){
+                    return false;
+                }
+            }
+            return true;
+        },
+
 
         // Listener
         onTyping(event){
@@ -53,40 +94,30 @@ let gameManager = (function () {
                     }
                 }
             } else if(key === "ENTER") {
-                //console.log(word)
-                let tmp = 7 - chance;
-                for (let i = (wordLength * tmp), j = 0; i < (wordLength * tmp) + wordLength; i++, j++) {
-                    if(children[i].textContent === word[j]){
-                        children[i].classList.add("green");
-                    } else if(word.includes(children[i].textContent)){
-                        children[i].classList.add("orange");
-                    }
-                }
-                // CheckWin
-                for (let i = 0, count = 0; i < wordLength; i++) {
-                    if(children[i].textContent === word[i]){
-                        count++
-                        if(count === wordLength){
-                            //console.log("Win")
+
+                if(gameManager.isRowFull()){
+
+                    let tmp = 7 - chance;
+                    for (let i = (wordLength * tmp), j = 0; i < (wordLength * tmp) + wordLength; i++, j++) {
+                        if(children[i].textContent === word[j]){
+                            children[i].classList.add("green");
+                        } else if(word.includes(children[i].textContent)){
+                            children[i].classList.add("orange");
                         }
                     }
-                }
 
-                // CheckLoose
-                chance -= 1;
-                if(chance <= 0){
-                    //console.log("Looser")
-                } else {
-                    let tmp = 7 - chance;
-                    for (let i = (wordLength * tmp); i < (wordLength * tmp) + wordLength; i++) {
-                        children[i].textContent = "."
-                    }
-                    previousLetterIndex = undefined;
+                    // CheckWin
+                    gameManager.checkWin();
+
+                    // CheckLoose
+                    chance -= 1;
+                    gameManager.checkLoose();
                 }
             } else {
                 for (let i = 0; i < children.length; i++) {
                     if(children[i].textContent === "."){
                         children[i].textContent = key;
+                        savedRow.push(i);
                         if(i !== 0){
                             console.log(i)
                             previousLetterIndex = i - 1;
